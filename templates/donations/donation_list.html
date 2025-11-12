@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>Filter by Category</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a href="{% url 'donation_list' %}" class="list-group-item list-group-item-action {% if not request.GET.category %}active{% endif %}">
+                        All Categories
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'donation_list' %}?category={{ category.id }}" class="list-group-item list-group-item-action {% if request.GET.category == category.id|stringformat:'i' %}active{% endif %}">
+                        <i class="{{ category.icon }} me-2"></i>{{ category.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <h2>Available Donations</h2>
+        
+        {% if donations %}
+        <div class="row">
+            {% for donation in donations %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    {% if donation.image %}
+                    <img src="{{ donation.image.url }}" class="card-img-top" alt="{{ donation.title }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="{{ donation.category.icon }} fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ donation.title }}</h5>
+                        <p class="card-text">{{ donation.description|truncatewords:15 }}</p>
+                        
+                        <div class="mb-2">
+                            <span class="badge bg-primary">{{ donation.category.name }}</span>
+                            {% if donation.food_type %}
+                            <span class="badge bg-info">{{ donation.get_food_type_display }}</span>
+                            {% endif %}
+                            <span class="badge bg-success">{{ donation.quantity }} available</span>
+                        </div>
+                        
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <i class="fas fa-map-marker-alt"></i> {{ donation.pickup_address|truncatewords:5 }}
+                            </small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i> Pickup before: {{ donation.pickup_deadline|date:"M d, Y H:i" }}
+                            </small>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'donation_detail' donation.pk %}" class="btn btn-primary btn-sm">View Details</a>
+                        <small class="text-muted float-end">
+                            By: {{ donation.donor.organization_name|default:donation.donor.user.username }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            No donations available at the moment. Check back later or 
+            {% if user.is_authenticated %}
+            <a href="{% url 'create_donation' %}">create a donation</a>.
+            {% else %}
+            <a href="{% url 'login' %}">login to create a donation</a>.
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

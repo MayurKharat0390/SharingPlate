@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-map-marked-alt me-2"></i>
+                    Help Seekers Map
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    This map shows all verified organizations that need help in your area.
+                </div>
+                
+                <!-- Simple Map Placeholder -->
+                <div id="map-container" style="height: 500px; background: #f8f9fa; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-center text-muted">
+                        <i class="fas fa-map fa-3x mb-3"></i>
+                        <h5>Interactive Map View</h5>
+                        <p>Map integration would show organizations here</p>
+                        <p class="small">(For implementation: Integrate with Google Maps or Leaflet.js)</p>
+                    </div>
+                </div>
+
+                <!-- Organizations List as Fallback -->
+                <div class="mt-4">
+                    <h5>Organizations in Need</h5>
+                    <div class="row">
+                        {% for seeker in help_seekers %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ seeker.organization_name }}</h6>
+                                    <p class="card-text small text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        {{ seeker.city }}, {{ seeker.state }}
+                                    </p>
+                                    <span class="badge bg-info">{{ seeker.seeker_type.name }}</span>
+                                    {% if seeker.is_urgent %}
+                                    <span class="badge bg-danger">Urgent</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-warning">
+                                No organizations available to display on map.
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

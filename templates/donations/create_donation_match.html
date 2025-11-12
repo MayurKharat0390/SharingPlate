@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-handshake me-2"></i>
+                    Offer Donation to {{ help_seeker.organization_name }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <!-- Organization Info -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Organization Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> {{ help_seeker.organization_name }}</p>
+                                <p><strong>Type:</strong> {{ help_seeker.seeker_type.name }}</p>
+                                <p><strong>Location:</strong> {{ help_seeker.city }}, {{ help_seeker.state }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                {% if distance %}
+                                <p><strong>Distance:</strong> {{ distance|floatformat:1 }} km</p>
+                                {% endif %}
+                                <p><strong>Match Score:</strong> {{ match_score|floatformat:0 }}%</p>
+                                {% if help_seeker.is_urgent %}
+                                <p class="text-danger"><strong>Urgent Needs:</strong> {{ help_seeker.urgent_needs }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <p><strong>Description:</strong> {{ help_seeker.description }}</p>
+                    </div>
+                </div>
+
+                <!-- Donation Info -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Your Donation</h5>
+                        <p><strong>Item:</strong> {{ donation.title }}</p>
+                        <p><strong>Category:</strong> {{ donation.category.name }}</p>
+                        <p><strong>Quantity:</strong> {{ donation.quantity }}</p>
+                        <p><strong>Description:</strong> {{ donation.description }}</p>
+                    </div>
+                </div>
+
+                <!-- Match Form -->
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="form-group mt-4">
+                        <button class="btn btn-success btn-lg w-100" type="submit">
+                            <i class="fas fa-paper-plane me-2"></i>Send Donation Offer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

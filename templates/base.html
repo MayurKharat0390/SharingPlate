@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UHV Donation Platform - Share Food, Share Love{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #2E8B57;
+            --secondary-color: #FF6B35;
+            --accent-color: #4ECDC4;
+            --dark-color: #2C3E50;
+            --light-color: #F8F9FA;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #3CB371 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-section {
+            background-color: var(--dark-color);
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #3CB371 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 139, 87, 0.4);
+        }
+        
+        .btn-secondary-custom {
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+            color: white;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: none;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .dropdown-menu {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .dropdown-item {
+            padding: 10px 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .search-box {
+            border-radius: 50px;
+            border: 1px solid #e0e0e0;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .category-badge {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #26A69A 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .donation-card {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .donation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .urgency-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1;
+        }
+        
+        .progress-bar-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 10px;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(135deg, var(--primary-color) 0%, #3CB371 100%);">
+        <div class="container">
+            <!-- Brand Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <i class="fas fa-hands-helping me-2"></i>
+                <span>UHV Donation Hub</span>
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'donation_list' %}">
+                            <i class="fas fa-search me-1"></i> Browse Donations
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_donation' %}">
+                            <i class="fas fa-plus-circle me-1"></i> Create Donation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_donations' %}">
+                            <i class="fas fa-box me-1"></i> My Donations
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                
+                <!-- Search Bar -->
+                <form class="d-flex me-3" method="GET" action="{% url 'donation_list' %}">
+                    <div class="input-group search-box">
+                        <input type="text" name="q" class="form-control border-0 bg-transparent" placeholder="Search donations..." aria-label="Search">
+                        <button class="btn border-0 bg-transparent" type="submit">
+                            <i class="fas fa-search text-muted"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- User Section -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <!-- Notifications -->
+                    <li class="nav-item dropdown me-2">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            {% with unread_count=user.notification_set.filter|length %}
+                                {% if unread_count > 0 %}
+                                <span class="notification-badge">{{ unread_count }}</span>
+                                {% endif %}
+                            {% endwith %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            {% for notification in user.notification_set.all|slice:":5" %}
+                            <li>
+                                <a class="dropdown-item {% if not notification.is_read %}fw-bold{% endif %}" href="{{ notification.link }}">
+                                    <small>{{ notification.message|truncatewords:10 }}</small>
+                                    <br>
+                                    <small class="text-muted">{{ notification.created_at|timesince }} ago</small>
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li><a class="dropdown-item text-muted" href="#">No notifications</a></li>
+                            {% endfor %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center" href="#">View All</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- User Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="user-avatar me-2">
+                                {{ user.username|first|upper }}
+                            </div>
+                            <span>{{ user.username }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user me-2"></i>My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'update_donor_profile' %}">
+                                    <i class="fas fa-hand-holding-heart me-2"></i>Donor Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'my_donations' %}">
+                                    <i class="fas fa-box me-2"></i>My Donations
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cog me-2"></i>Settings
+                                </a>
+                            </li>
+                           <li>
+    <a class="dropdown-item" href="{% url 'logout' %}">
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
+    </a>
+</li>
+
+                        </ul>
+                    </li>
+                    {% else %}
+                    <!-- Authentication Buttons -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light btn-sm ms-2" href="{% url 'register' %}" style="border-radius: 20px;">
+                            <i class="fas fa-user-plus me-1"></i> Sign Up
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages/Alerts -->
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                    {% if message.tags == 'success' %}
+                    <i class="fas fa-check-circle me-2"></i>
+                    {% elif message.tags == 'error' or message.tags == 'danger' %}
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    {% elif message.tags == 'warning' %}
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {% elif message.tags == 'info' %}
+                    <i class="fas fa-info-circle me-2"></i>
+                    {% endif %}
+                    <div>{{ message }}</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        <!-- Default content can go here -->
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h1 class="display-4 fw-bold text-dark mb-4">Welcome to UHV Donation Platform</h1>
+                    <p class="lead text-muted mb-4">Connecting generosity with need. Share food, clothes, books and make a difference in your community.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{% url 'donation_list' %}" class="btn btn-primary-custom btn-lg me-md-2">
+                            <i class="fas fa-search me-2"></i>Find Donations
+                        </a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'create_donation' %}" class="btn btn-secondary-custom btn-lg">
+                            <i class="fas fa-plus me-2"></i>Create Donation
+                        </a>
+                        {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-secondary-custom btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Join Now
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-hands-helping me-2"></i>UHV Donation Hub
+                    </h5>
+                    <p class="text-light">Connecting donors with those in need. Reducing waste, spreading kindness, and building stronger communities together.</p>
+                    <div class="d-flex mt-4">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-light text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'donation_list' %}" class="text-light text-decoration-none">Browse</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="mb-2"><a href="{% url 'create_donation' %}" class="text-light text-decoration-none">Donate</a></li>
+                        <li class="mb-2"><a href="{% url 'my_donations' %}" class="text-light text-decoration-none">My Donations</a></li>
+                        {% else %}
+                        <li class="mb-2"><a href="{% url 'login' %}" class="text-light text-decoration-none">Login</a></li>
+                        <li class="mb-2"><a href="{% url 'register' %}" class="text-light text-decoration-none">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold mb-3">Categories</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-utensils me-2"></i>Food</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-tshirt me-2"></i>Clothes</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-book me-2"></i>Books</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-money-bill-wave me-2"></i>Money</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold mb-3">Contact Info</h6>
+                    <ul class="list-unstyled text-light">
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>help@uhvdonation.org</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i>+1 (555) 123-4567</li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>123 Charity St, Hope City</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-light mb-0">&copy; 2025 UHV Donation Platform. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-light text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-light text-decoration-none">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Auto-dismiss alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,43 @@
+NEW DONATION REQUEST NOTIFICATION
+=================================
+
+Someone has requested your donation on UHV Donation Platform.
+
+YOUR DONATION DETAILS:
+----------------------
+Title: {{ donation.title }}
+Category: {{ donation.category.name }}
+Quantity: {{ donation.quantity }}
+Food Type: {{ donation.get_food_type_display|default:"Not specified" }}
+Pickup Location: {{ donation.pickup_city }}, {{ donation.pickup_state }}
+Pickup Deadline: {{ donation.pickup_deadline|date:"M d, Y H:i" }}
+
+REQUESTER INFORMATION:
+----------------------
+Name: {{ requester.username }}
+Email: {{ requester.email }}
+Organization: {{ requester_profile.organization_name|default:"Individual" }}
+Phone: {{ requester_profile.phone|default:"Not provided" }}
+Location: {{ requester_profile.city }}, {{ requester_profile.state }}
+{% if donation_request.message %}
+Message: "{{ donation_request.message }}"
+{% endif %}
+
+REQUEST DETAILS:
+----------------
+Requested Quantity: {{ donation_request.requested_quantity }}
+Requested At: {{ donation_request.created_at|date:"M d, Y H:i" }}
+
+NEXT STEPS:
+-----------
+1. Review the requester's information
+2. Contact them to coordinate pickup
+3. Update the request status in the system
+4. Mark as completed after successful donation
+
+Manage this request: {{ admin_url }}
+View on website: {{ site_url }}
+
+---
+This email was sent from your UHV Donation Platform.
+© {% now "Y" %} UHV Donation Platform. All rights reserved.

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Requests for "{{ donation.title }}"</h2>
+        
+        {% if requests %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Requester</th>
+                        <th>Message</th>
+                        <th>Requested Quantity</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in requests %}
+                    <tr>
+                        <td>{{ req.requester.username }}</td>
+                        <td>{{ req.message|default:"No message" }}</td>
+                        <td>{{ req.requested_quantity }}</td>
+                        <td>
+                            <span class="badge {% if req.status == 'pending' %}bg-warning{% elif req.status == 'accepted' %}bg-success{% elif req.status == 'rejected' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                {{ req.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ req.created_at|date:"M d, Y H:i" }}</td>
+                        <td>
+                            {% if req.status == 'pending' %}
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'update_request_status' req.id 'accepted' %}" class="btn btn-success">Accept</a>
+                                <a href="{% url 'update_request_status' req.id 'rejected' %}" class="btn btn-danger">Reject</a>
+                            </div>
+                            {% else %}
+                            <span class="text-muted">No actions</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            No requests for this donation yet.
+        </div>
+        {% endif %}
+        
+        <a href="{% url 'my_donations' %}" class="btn btn-secondary">Back to My Donations</a>
+    </div>
+</div>
+{% endblock %}

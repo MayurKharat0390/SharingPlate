@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Create Donation</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" id="donation-form">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Basic Information</h5>
+                        </div>
+                        <div class="card-body">
+                            {{ form.category|as_crispy_field }}
+                            {{ form.title|as_crispy_field }}
+                            {{ form.description|as_crispy_field }}
+                            {{ form.quantity|as_crispy_field }}
+                            {{ form.preferred_help_seekers|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <!-- Food Specific Fields (Initially Hidden) -->
+                    <div class="card mb-4" id="food-fields" style="display: none;">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">Food Specific Information</h5>
+                        </div>
+                        <div class="card-body">
+                            {{ form.food_type|as_crispy_field }}
+                            {{ form.cooked_time|as_crispy_field }}
+                            {{ form.best_before|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <!-- Pickup Information -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Pickup Information</h5>
+                        </div>
+                        <div class="card-body">
+                            {{ form.pickup_address|as_crispy_field }}
+                            {{ form.pickup_deadline|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Donation Image (Optional)</h5>
+                        </div>
+                        <div class="card-body">
+                            {{ form.image|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <button class="btn btn-success w-100" type="submit">Create Donation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to show/hide food fields -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.querySelector('#id_category');
+    const foodFields = document.getElementById('food-fields');
+    
+    // Get food category ID from data attribute or use default (usually 1 for Food)
+    const foodCategoryId = categorySelect.getAttribute('data-food-category-id') || '1';
+    
+    function toggleFoodFields() {
+        const selectedCategoryId = categorySelect.value;
+        
+        if (selectedCategoryId === foodCategoryId) {
+            // Show food fields
+            foodFields.style.display = 'block';
+            
+            // Make food fields required
+            document.querySelector('#id_food_type').required = true;
+            document.querySelector('#id_cooked_time').required = true;
+            document.querySelector('#id_best_before').required = true;
+        } else {
+            // Hide food fields
+            foodFields.style.display = 'none';
+            
+            // Remove required attribute from food fields
+            document.querySelector('#id_food_type').required = false;
+            document.querySelector('#id_cooked_time').required = false;
+            document.querySelector('#id_best_before').required = false;
+            
+            // Clear food field values
+            document.querySelector('#id_food_type').value = '';
+            document.querySelector('#id_cooked_time').value = '';
+            document.querySelector('#id_best_before').value = '';
+        }
+    }
+    
+    // Initial check
+    toggleFoodFields();
+    
+    // Add event listener for category change
+    categorySelect.addEventListener('change', toggleFoodFields);
+});
+</script>
+
+<style>
+/* Smooth transition for showing/hiding fields */
+#food-fields {
+    transition: all 0.3s ease-in-out;
+}
+</style>
+{% endblock %}

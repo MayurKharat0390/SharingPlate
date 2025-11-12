@@ -1,0 +1,456 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section with Animation -->
+<section class="hero-section position-relative overflow-hidden rounded-4 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row align-items-center min-vh-50 py-5">
+            <div class="col-lg-6 text-white">
+                <h1 class="display-3 fw-bold mb-4 animate-fade-in">
+                    Share Food, <span class="text-warning">Share Love</span> ❤️
+                </h1>
+                <p class="lead mb-4 fs-5 animate-slide-up">
+                    Join the movement to reduce waste and spread kindness. Connect with local organizations and make a real difference in your community.
+                </p>
+                <div class="d-flex flex-wrap gap-3 animate-bounce-in">
+                    <a href="{% url 'donation_list' %}" class="btn btn-light btn-lg shadow-lg hover-lift">
+                        <i class="fas fa-search me-2"></i>Explore Donations
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'create_donation' %}" class="btn btn-outline-light btn-lg shadow hover-lift">
+                        <i class="fas fa-plus me-2"></i>Start Donating
+                    </a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg shadow hover-lift">
+                        <i class="fas fa-user-plus me-2"></i>Join Our Mission
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="mt-4 d-flex flex-wrap gap-4 text-white-50">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-alt me-2 text-success"></i>
+                        <small>Verified Organizations</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-bolt me-2 text-warning"></i>
+                        <small>Instant Matching</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-heart me-2 text-danger"></i>
+                        <small>Community Driven</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="position-relative">
+                    <img src="https://cdn.pixabay.com/photo/2017/09/23/12/40/calendar-2777860_1280.png" 
+                         alt="Donation Community" 
+                         class="img-fluid floating-animation"
+                         style="max-height: 400px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));">
+                    <div class="floating-badge bg-success text-white p-3 rounded-3 shadow-lg position-absolute top-0 start-0">
+                        <i class="fas fa-users fa-2x mb-2"></i>
+                        <div class="fw-bold">{{ active_donors }}+</div>
+                        <small>Active Donors</small>
+                    </div>
+                    <div class="floating-badge bg-warning text-dark p-3 rounded-3 shadow-lg position-absolute bottom-0 end-0">
+                        <i class="fas fa-hands-helping fa-2x mb-2"></i>
+                        <div class="fw-bold">{{ total_organizations }}+</div>
+                        <small>Organizations</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Animated background elements -->
+
+   
+</section>
+
+<!-- Impact Stats with Counter Animation -->
+<section class="stats-section py-5 mb-5 rounded-4 position-relative overflow-hidden" 
+         style="background: linear-gradient(45deg, #2c3e50, #34495e);">
+    <div class="container position-relative z-1">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-container">
+                    <div class="stat-number text-warning fw-bold display-4" data-count="{{ total_donations }}">0</div>
+                    <div class="text-light fw-medium">Donations Made</div>
+                    <div class="stat-icon mt-2">
+                        <i class="fas fa-gift fa-2x text-warning opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-container">
+                    <div class="stat-number text-info fw-bold display-4" data-count="{{ total_organizations }}">0</div>
+                    <div class="text-light fw-medium">Organizations Helped</div>
+                    <div class="stat-icon mt-2">
+                        <i class="fas fa-hands-helping fa-2x text-info opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-container">
+                    <div class="stat-number text-success fw-bold display-4" data-count="{{ total_food_saved }}">0</div>
+                    <div class="text-light fw-medium">Kg Food Saved</div>
+                    <div class="stat-icon mt-2">
+                        <i class="fas fa-leaf fa-2x text-success opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-container">
+                    <div class="stat-number text-primary fw-bold display-4" data-count="{{ active_donors }}">0</div>
+                    <div class="text-light fw-medium">Active Donors</div>
+                    <div class="stat-icon mt-2">
+                        <i class="fas fa-users fa-2x text-primary opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Animated background -->
+    <div class="position-absolute top-0 start-0 w-100 h-100">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+</section>
+
+<!-- Help Seeker Types with Interactive Cards -->
+<section class="container mb-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h2 class="fw-bold display-5 mb-3">Who We Help 🤝</h2>
+            <p class="text-muted lead">Support various types of organizations making a difference in your community</p>
+        </div>
+    </div>
+    <div class="row g-4">
+        {% for seeker_type in help_seeker_types %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card feature-card h-100 text-center hover-scale shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="icon-wrapper bg-gradient-primary rounded-3 p-3 mb-3 mx-auto" style="width: 80px; height: 80px;">
+                        <i class="{{ seeker_type.icon }} fa-2x text-white"></i>
+                    </div>
+                    <h5 class="card-title fw-bold text-dark mb-2">{{ seeker_type.name }}</h5>
+                    <p class="card-text text-muted small lh-base">{{ seeker_type.description|truncatewords:20 }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <span class="badge bg-light text-primary rounded-pill">Featured</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+        <a href="{% url 'help_seeker_directory' %}" class="btn btn-primary btn-lg shadow hover-lift me-3">
+            <i class="fas fa-search me-2"></i>Browse All Organizations
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'register_help_seeker' %}" class="btn btn-outline-primary btn-lg hover-lift">
+            <i class="fas fa-hands-helping me-2"></i>Register Your Organization
+        </a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Recent Donations with Enhanced Cards -->
+<section class="container mb-5">
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold display-5">Fresh Donations 🎁</h2>
+                <a href="{% url 'donation_list' %}" class="btn btn-outline-primary">
+                    View All <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        {% for donation in recent_donations %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card donation-card h-100 shadow-sm border-0 hover-lift">
+                {% if donation.image %}
+                <div class="card-img-container position-relative overflow-hidden">
+                    <img src="{{ donation.image.url }}" class="card-img-top" alt="{{ donation.title }}" 
+                         style="height: 200px; object-fit: cover; transition: transform 0.3s ease;">
+                    <div class="card-badge position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-success bg-opacity-90 text-white">
+                            <i class="fas fa-clock me-1"></i>{{ donation.created_at|timesince }} ago
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-2">{{ donation.title }}</h5>
+                    <p class="card-text text-muted small mb-3">{{ donation.description|truncatewords:15 }}</p>
+                    
+                    <div class="donation-meta mb-3">
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border-0">
+                                <i class="fas fa-tag me-1"></i>{{ donation.category.name }}
+                            </span>
+                            <span class="badge bg-warning bg-opacity-10 text-warning border-0">
+                                <i class="fas fa-cube me-1"></i>{{ donation.quantity }} available
+                            </span>
+                        </div>
+                        {% if donation.food_type %}
+                        <span class="badge bg-info bg-opacity-10 text-info border-0">
+                            <i class="fas fa-utensils me-1"></i>{{ donation.get_food_type_display }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <a href="{% url 'donation_detail' donation.pk %}" class="btn btn-primary w-100 hover-lift">
+                        <i class="fas fa-eye me-2"></i>View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="empty-state-icon mb-4">
+                    <i class="fas fa-box-open fa-4x text-muted opacity-25"></i>
+                </div>
+                <h4 class="text-muted mb-3">No donations available yet</h4>
+                <p class="text-muted mb-4">Be the first to make a difference in your community!</p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'create_donation' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Create First Donation
+                </a>
+                {% else %}
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Join to Donate
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- How It Works with Steps -->
+<section class="bg-gradient-light py-5 rounded-4">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold display-5 mb-3">How It Works 🚀</h2>
+                <p class="text-muted lead">Three simple steps to make a difference</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="step-card text-center p-4 h-100">
+                    <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
+                         style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">1</span>
+                    </div>
+                    <div class="step-icon bg-primary bg-opacity-10 rounded-3 p-3 mb-3 mx-auto" style="width: 100px; height: 100px;">
+                        <i class="fas fa-utensils fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Create Donation</h4>
+                    <p class="text-muted mb-0">List your excess food, clothes, books or other items. Add photos and details to make it appealing.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="step-card text-center p-4 h-100">
+                    <div class="step-number bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
+                         style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">2</span>
+                    </div>
+                    <div class="step-icon bg-success bg-opacity-10 rounded-3 p-3 mb-3 mx-auto" style="width: 100px; height: 100px;">
+                        <i class="fas fa-map-marker-alt fa-3x text-success"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Smart Matching</h4>
+                    <p class="text-muted mb-0">Our intelligent system finds the perfect match with nearby organizations based on needs and location.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="step-card text-center p-4 h-100">
+                    <div class="step-number bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
+                         style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">3</span>
+                    </div>
+                    <div class="step-icon bg-info bg-opacity-10 rounded-3 p-3 mb-3 mx-auto" style="width: 100px; height: 100px;">
+                        <i class="fas fa-handshake fa-3x text-info"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Make Impact</h4>
+                    <p class="text-muted mb-0">Coordinate pickup/delivery and witness your donation creating smiles and changing lives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="cta-section bg-gradient-primary text-white rounded-4 p-5 text-center position-relative overflow-hidden">
+                <div class="position-absolute top-0 start-0 w-100 h-100">
+                    <div class="floating-particle p1"></div>
+                    <div class="floating-particle p2"></div>
+                    <div class="floating-particle p3"></div>
+                </div>
+                <div class="position-relative z-1">
+                    <h2 class="display-5 fw-bold mb-3">Ready to Make a Difference? 🌟</h2>
+                    <p class="lead mb-4 opacity-90">Join thousands of donors and organizations creating positive change in communities.</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'create_donation' %}" class="btn btn-light btn-lg shadow hover-lift">
+                            <i class="fas fa-plus me-2"></i>Start Donating Now
+                        </a>
+                        <a href="{% url 'donation_list' %}" class="btn btn-outline-light btn-lg hover-lift">
+                            <i class="fas fa-search me-2"></i>Browse Donations
+                        </a>
+                        {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg shadow hover-lift">
+                            <i class="fas fa-user-plus me-2"></i>Join Free Today
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg hover-lift">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Custom Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes float-shapes {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(180deg); }
+}
+
+.animate-fade-in { animation: fadeIn 1s ease-out; }
+.animate-slide-up { animation: slideUp 0.8s ease-out 0.2s both; }
+.animate-bounce-in { animation: bounceIn 1s ease-out 0.4s both; }
+.floating-animation { animation: float 6s ease-in-out infinite; }
+
+/* Hover Effects */
+.hover-scale { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.hover-scale:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important; }
+
+.hover-lift { transition: all 0.3s ease; }
+.hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+
+/* Stats Animation */
+.stat-number { font-size: 3.5rem; }
+
+/* Floating Elements */
+.floating-badge {
+    animation: float 4s ease-in-out infinite;
+    z-index: 10;
+}
+
+.floating-shape {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    animation: float-shapes 8s ease-in-out infinite;
+}
+
+.shape-1 { width: 100px; height: 100px; top: 10%; left: 5%; animation-delay: 0s; }
+.shape-2 { width: 150px; height: 150px; bottom: 20%; right: 10%; animation-delay: 2s; }
+.shape-3 { width: 80px; height: 80px; top: 60%; left: 80%; animation-delay: 4s; }
+
+/* Particle Animation */
+.floating-particle {
+    position: absolute;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.p1 { width: 20px; height: 20px; top: 20%; left: 10%; animation-delay: 0s; }
+.p2 { width: 15px; height: 15px; bottom: 30%; right: 20%; animation-delay: 2s; }
+.p3 { width: 25px; height: 25px; top: 50%; left: 80%; animation-delay: 4s; }
+
+/* Gradient Backgrounds */
+.bg-gradient-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.bg-gradient-light { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+.bg-gradient-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+
+/* Card Enhancements */
+.feature-card, .donation-card, .step-card {
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.feature-card:hover, .donation-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-3 { font-size: 2.5rem; }
+    .display-5 { font-size: 2rem; }
+    .stat-number { font-size: 2.5rem; }
+}
+</style>
+
+<script>
+// Counter animation for stats
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200;
+
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-count');
+        const count = +counter.innerText;
+        const increment = target / speed;
+
+        const updateCount = () => {
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCount, 1);
+            } else {
+                counter.innerText = target;
+            }
+        };
+
+        // Start counting when element is in viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    updateCount();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(counter);
+    });
+});
+</script>
+{% endblock %}

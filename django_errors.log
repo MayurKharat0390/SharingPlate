@@ -1,0 +1,182 @@
+Internal Server Error: /users/login/
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 1035, in find_library
+    return parser.libraries[name]
+KeyError: 'crispy_forms_tags'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 1097, in load
+    lib = find_library(parser, name)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\template\defaulttags.py", line 1037, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'crispy_forms_tags' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+i18n
+l10n
+log
+static
+tz
+"GET /users/login/ HTTP/1.1" 500 164123
+ERROR 2025-10-22 20:59:04,064 log 51636 24288 Internal Server Error: /donations/1/
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\UHV\uhv_donation\donations\views.py", line 167, in donation_detail
+    donation_request.save()
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1023, in save_base
+    post_save.send(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\dispatch\dispatcher.py", line 189, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "D:\UHV\uhv_donation\donations\models.py", line 505, in send_donation_request_notification
+    instance.send_notification_emails()
+AttributeError: 'DonationRequest' object has no attribute 'send_notification_emails'
+ERROR 2025-10-22 20:59:10,396 basehttp 51636 24288 "POST /donations/1/ HTTP/1.1" 500 95653
+ERROR 2025-10-22 21:04:26,607 log 32424 12684 Internal Server Error: /donations/2/
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: donations_donationrequest.donation_id, donations_donationrequest.requester_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\UHV\uhv_donation\donations\views.py", line 167, in donation_detail
+    donation_request.save()
+  File "D:\UHV\uhv_donation\donations\models.py", line 346, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: donations_donationrequest.donation_id, donations_donationrequest.requester_id
+ERROR 2025-10-22 21:04:30,093 basehttp 32424 12684 "POST /donations/2/ HTTP/1.1" 500 164508
+ERROR 2025-10-22 21:04:49,393 log 32424 12684 Internal Server Error: /donations/2/
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: donations_donationrequest.donation_id, donations_donationrequest.requester_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\UHV\uhv_donation\donations\views.py", line 167, in donation_detail
+    donation_request.save()
+  File "D:\UHV\uhv_donation\donations\models.py", line 346, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\MAYUR KHARAT\AppData\Local\Programs\Python\Python310\lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: donations_donationrequest.donation_id, donations_donationrequest.requester_id
+ERROR 2025-10-22 21:04:53,233 basehttp 32424 12684 "POST /donations/2/ HTTP/1.1" 500 164508

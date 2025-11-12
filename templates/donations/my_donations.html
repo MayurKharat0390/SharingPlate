@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Donations</h2>
+
+{% if donations %}
+<div class="row">
+    {% for donation in donations %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            {% if donation.image %}
+            <img src="{{ donation.image.url }}" class="card-img-top" alt="{{ donation.title }}" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ donation.title }}</h5>
+                <p class="card-text">{{ donation.description|truncatewords:20 }}</p>
+                
+                <div class="mb-2">
+                    <span class="badge bg-primary">{{ donation.category.name }}</span>
+                    <span class="badge {% if donation.status == 'available' %}bg-success{% elif donation.status == 'reserved' %}bg-warning{% else %}bg-secondary{% endif %}">
+                        {{ donation.get_status_display }}
+                    </span>
+                    <span class="badge bg-info">{{ donation.quantity }} available</span>
+                </div>
+                
+                <p class="card-text">
+                    <small class="text-muted">
+                        Created: {{ donation.created_at|date:"M d, Y" }}
+                    </small>
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'donation_detail' donation.pk %}" class="btn btn-primary btn-sm">View</a>
+                <a href="{% url 'donation_requests' donation.id %}" class="btn btn-info btn-sm">
+                    Requests ({{ donation.donationrequest_set.count }})
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i>
+    You haven't created any donations yet. 
+    <a href="{% url 'create_donation' %}">Create your first donation</a> to get started!
+</div>
+{% endif %}
+{% endblock %}

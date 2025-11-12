@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-user-shield me-2"></i>
+                    Verification Dashboard
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if verification_requests %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Document</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vr in verification_requests %}
+                            <tr>
+                                <td>{{ vr.user.username }}</td>
+                                <td>{{ vr.get_verification_type_display }}</td>
+                                <td>
+                                    <span class="badge {% if vr.status == 'pending' %}bg-warning{% elif vr.status == 'under_review' %}bg-info{% else %}bg-secondary{% endif %}">
+                                        {{ vr.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ vr.submitted_at|date:"M d, Y H:i" }}</td>
+                                <td>
+                                    {% if vr.document %}
+                                    <a href="{{ vr.document.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        View Document
+                                    </a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'review_verification' vr.id %}" class="btn btn-sm btn-success">
+                                        Review
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    No pending verification requests!
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

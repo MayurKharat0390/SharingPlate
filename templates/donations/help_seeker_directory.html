@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-search me-2"></i>
+                    Help Seeker Directory
+                </h4>
+            </div>
+            <div class="card-body">
+                <!-- Search and Filter Form -->
+                <form method="GET" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Organization Type</label>
+                        <select name="type" class="form-select">
+                            <option value="">All Types</option>
+                            {% for type in seeker_types %}
+                            <option value="{{ type.id }}" {% if request.GET.type == type.id|stringformat:'i' %}selected{% endif %}>
+                                {{ type.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">City</label>
+                        <input type="text" name="city" class="form-control" placeholder="Enter city..." value="{{ request.GET.city }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Organizations List -->
+        {% if help_seekers %}
+        <div class="row">
+            {% for seeker in help_seekers %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 donation-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title">{{ seeker.organization_name }}</h5>
+                            <div>
+                                <span class="badge bg-info">{{ seeker.seeker_type.name }}</span>
+                                {% if seeker.is_urgent %}
+                                <span class="badge bg-danger">Urgent</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <p class="card-text text-muted small">
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            {{ seeker.address }}, {{ seeker.city }}, {{ seeker.state }}
+                        </p>
+                        
+                        <p class="card-text">{{ seeker.description|truncatewords:30 }}</p>
+                        
+                        {% if seeker.capacity %}
+                        <p class="card-text small">
+                            <i class="fas fa-users me-1"></i>
+                            Serves {{ seeker.capacity }} people
+                        </p>
+                        {% endif %}
+                        
+                        {% if seeker.is_urgent and seeker.urgent_needs %}
+                        <div class="alert alert-warning py-2 mb-3">
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            <strong>Urgent Needs:</strong> {{ seeker.urgent_needs }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <a href="tel:{{ seeker.phone }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-phone me-1"></i>Call
+                        </a>
+                        <span class="text-muted ms-2">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            {{ seeker.get_verification_status_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i>
+            No organizations found matching your criteria. 
+            {% if user.is_authenticated %}
+            <a href="{% url 'register_help_seeker' %}">Register your organization</a> to get started.
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

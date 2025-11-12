@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Organization Profile</h5>
+            </div>
+            <div class="card-body">
+                <h6>{{ help_seeker.organization_name }}</h6>
+                <p class="text-muted">{{ help_seeker.seeker_type.name }}</p>
+                <p><i class="fas fa-map-marker-alt me-2"></i>{{ help_seeker.address }}, {{ help_seeker.city }}</p>
+                <p><i class="fas fa-phone me-2"></i>{{ help_seeker.phone }}</p>
+                
+                <span class="badge {% if help_seeker.verification_status == 'verified' %}bg-success{% elif help_seeker.verification_status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                    {{ help_seeker.get_verification_status_display }}
+                </span>
+                
+                {% if help_seeker.is_urgent %}
+                <span class="badge bg-danger ms-2">Urgent Needs</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'create_help_request' %}" class="btn btn-primary w-100 mb-2">
+                    <i class="fas fa-plus me-2"></i>Create Help Request
+                </a>
+                <a href="{% url 'help_seeker_directory' %}" class="btn btn-outline-primary w-100 mb-2">
+                    <i class="fas fa-search me-2"></i>Browse Other Organizations
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Active Help Requests</h5>
+            </div>
+            <div class="card-body">
+                {% if help_requests %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Urgency</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in help_requests %}
+                            <tr>
+                                <td>{{ request.title }}</td>
+                                <td>{{ request.category.name }}</td>
+                                <td>
+                                    <span class="badge {% if request.urgency == 'critical' %}bg-danger{% elif request.urgency == 'high' %}bg-warning{% elif request.urgency == 'medium' %}bg-info{% else %}bg-secondary{% endif %}">
+                                        {{ request.get_urgency_display }}
+                                    </span>
+                                </td>
+                                <td>{{ request.quantity_needed }}</td>
+                                <td>
+                                    <span class="badge {% if request.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {{ request.is_active|yesno:"Active,Inactive" }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No active help requests. <a href="{% url 'create_help_request' %}">Create your first request</a>.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-handshake me-2"></i>Donation Matches</h5>
+            </div>
+            <div class="card-body">
+                {% if donation_matches %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Donation</th>
+                                <th>Donor</th>
+                                <th>Distance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for match in donation_matches %}
+                            <tr>
+                                <td>{{ match.donation.title }}</td>
+                                <td>{{ match.donation.donor.organization_name|default:match.donation.donor.user.username }}</td>
+                                <td>{{ match.distance_km|floatformat:1 }} km</td>
+                                <td>
+                                    <span class="badge {% if match.status == 'accepted' %}bg-success{% elif match.status == 'pending' %}bg-warning{% elif match.status == 'delivered' %}bg-info{% else %}bg-danger{% endif %}">
+                                        {{ match.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'donation_match_detail' match.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No donation matches yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

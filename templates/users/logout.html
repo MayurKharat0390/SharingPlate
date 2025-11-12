@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-sign-out-alt me-2"></i>
+                    Logged Out
+                </h4>
+            </div>
+            <div class="card-body text-center">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle fa-2x mb-3"></i>
+                    <h5>You have been successfully logged out.</h5>
+                </div>
+                <p class="text-muted">Thank you for using UHV Donation Platform.</p>
+                <div class="mt-4">
+                    <a href="{% url 'login' %}" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Log In Again
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary ms-2">
+                        <i class="fas fa-home me-2"></i>Go to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

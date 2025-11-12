@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-handshake me-2"></i>
+                    Donation Match Details
+                </h4>
+            </div>
+            <div class="card-body">
+                <!-- Status Badge -->
+                <div class="text-center mb-4">
+                    <span class="badge {% if donation_match.status == 'accepted' %}bg-success{% elif donation_match.status == 'pending' %}bg-warning{% elif donation_match.status == 'delivered' %}bg-info{% else %}bg-danger{% endif %} fs-6">
+                        Status: {{ donation_match.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="row">
+                    <!-- Donation Details -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Donation Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Item:</strong> {{ donation_match.donation.title }}</p>
+                                <p><strong>Category:</strong> {{ donation_match.donation.category.name }}</p>
+                                <p><strong>Quantity:</strong> {{ donation_match.donation.quantity }}</p>
+                                <p><strong>Description:</strong> {{ donation_match.donation.description }}</p>
+                                <p><strong>Donor:</strong> {{ donation_match.donation.donor.organization_name|default:donation_match.donation.donor.user.username }}</p>
+                                <p><strong>Pickup Address:</strong> {{ donation_match.donation.pickup_address }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Organization Details -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Organization Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> {{ donation_match.help_seeker.organization_name }}</p>
+                                <p><strong>Type:</strong> {{ donation_match.help_seeker.seeker_type.name }}</p>
+                                <p><strong>Address:</strong> {{ donation_match.help_seeker.address }}, {{ donation_match.help_seeker.city }}</p>
+                                <p><strong>Phone:</strong> {{ donation_match.help_seeker.phone }}</p>
+                                {% if donation_match.distance_km %}
+                                <p><strong>Distance:</strong> {{ donation_match.distance_km|floatformat:1 }} km</p>
+                                {% endif %}
+                                <p><strong>Match Score:</strong> {{ donation_match.match_score|floatformat:0 }}%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0">Donor's Message</h6>
+                            </div>
+                            <div class="card-body">
+                                {% if donation_match.donor_message %}
+                                <p>{{ donation_match.donor_message }}</p>
+                                {% else %}
+                                <p class="text-muted">No message from donor.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="mb-0">Organization's Response</h6>
+                            </div>
+                            <div class="card-body">
+                                {% if donation_match.seeker_response %}
+                                <p>{{ donation_match.seeker_response }}</p>
+                                {% else %}
+                                <p class="text-muted">No response yet.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Information -->
+                {% if donation_match.scheduled_pickup %}
+                <div class="card mt-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0">Scheduled Pickup</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Date & Time:</strong> {{ donation_match.scheduled_pickup|date:"M d, Y H:i" }}</p>
+                        {% if donation_match.actual_delivery %}
+                        <p><strong>Actual Delivery:</strong> {{ donation_match.actual_delivery|date:"M d, Y H:i" }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Actions -->
+                {% if user == donation_match.help_seeker.user and donation_match.status == 'pending' %}
+                <div class="card mt-4">
+                    <div class="card-header bg-dark text-white">
+                        <h6 class="mb-0">Respond to Donation Offer</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="response_message" class="form-label">Your Response Message (Optional)</label>
+                                <textarea name="response_message" class="form-control" rows="3" placeholder="Add any comments or questions..."></textarea>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex">
+                                <button type="submit" name="action" value="accept" class="btn btn-success btn-lg flex-fill">
+                                    <i class="fas fa-check me-2"></i>Accept Donation
+                                </button>
+                                <button type="submit" name="action" value="reject" class="btn btn-danger btn-lg flex-fill">
+                                    <i class="fas fa-times me-2"></i>Reject Donation
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% elif user == donation_match.donation.donor.user and donation_match.status == 'accepted' %}
+                <div class="card mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0">Delivery Confirmation</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <p>Mark this donation as delivered when the organization has received it.</p>
+                            <button type="submit" name="action" value="delivered" class="btn btn-success btn-lg">
+                                <i class="fas fa-check-circle me-2"></i>Mark as Delivered
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Navigation -->
+                <div class="mt-4 text-center">
+                    {% if user == donation_match.help_seeker.user %}
+                    <a href="{% url 'help_seeker_dashboard' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'my_donations' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to My Donations
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
