@@ -95,6 +95,6 @@ EMAIL_CONFIG = {
     'NOTIFICATIONS': 'notifications@uhvsharehub.com',
 }
 DEBUG = False
-ALLOWED_HOSTS = ['SharingPlate.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
