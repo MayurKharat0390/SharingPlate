@@ -1,14 +1,23 @@
 import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'your-secret-key-here'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-fallback-key-here')
 
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,6 +36,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,37 +63,50 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'uhv_donation.wsgi.application'
+
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
-
-LOGOUT_REDIRECT_URL = 'home'  # Add this line - redirect to home after logout
+LOGOUT_REDIRECT_URL = 'home'
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'uhv.donation.platform@gmail.com'  # Your platform email
-EMAIL_HOST_PASSWORD = 'pccoe@123'  # Google App Password
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'uhv.donation.platform@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'pccoe@123')
 DEFAULT_FROM_EMAIL = 'noreply@uhvsharehub.com'
 SERVER_EMAIL = 'noreply@uhvsharehub.com'
 
 # Site information
-SITE_URL = 'http://127.0.0.1:8000'  # Change in production
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
 SITE_NAME = 'UHV ShareHub'
+
+# CSRF Trusted Origins for Vercel
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
+    "http://*.127.0.0.1"
+]
 
 # Enable email notifications
 ENABLE_EMAIL_NOTIFICATIONS = True
@@ -94,7 +117,7 @@ EMAIL_CONFIG = {
     'SUPPORT': 'support@uhvsharehub.com',
     'NOTIFICATIONS': 'notifications@uhvsharehub.com',
 }
-DEBUG = False
-ALLOWED_HOSTS = ['*']
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.backends.BigAutoField'
